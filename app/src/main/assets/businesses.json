@@ -3,14 +3,14 @@
     {
       "name": "Lehamim Bakery",
       "ID": "11111111",
-	  "type": "bakery",
+      "type": "bakery",
       "latitude": 32.069657,
       "longitude": 34.784563,
-      "address" : "HaHashmonaim St 103, Tel Aviv-Yafo",
+      "address": "HaHashmonaim St 103, Tel Aviv-Yafo",
 	  "hours": "7AM–8:30PM",
-	  "phone number": "03-561-8111",
-	  "logo URL": "insert jpg file",
-	  "discount start hour": "20:00"
+	  "phoneNumber": "03-561-8111",
+	  "logoURL": "insert jpg file",
+	  "discountStartHour": "20:00"
     },
 
     {
@@ -19,11 +19,11 @@
 	  "type": "bakery",
       "latitude": 32.079852,
       "longitude": 34.773613,
-      "address" : "Frishman St 39, Tel Aviv-Yafo",
+      "address": "Frishman St 39, Tel Aviv-Yafo",
 	  "hours": "7AM–8:30PM",
-	  "phone number": "03-523-3396",
-	  "logo URL": "insert jpg file",
-	  "discount start hour": "19:00"
+	  "phoneNumber": "03-523-3396",
+	  "logoURL": "insert jpg file",
+	  "discountStartHour": "19:00"
     },
 
 	{
@@ -32,11 +32,11 @@
       "type": "patisserie",
       "latitude": 32.079356,
       "longitude": 34.779773,
-      "address" : "Frishman St 90, Tel Aviv-Yafo",
+      "address": "Frishman St 90, Tel Aviv-Yafo",
       "hours": "7AM–8:00PM",
-      "phone number": "1-700-700-061",
-	  "logo URL": "insert jpg file",
-	  "discount start hour": "18:30"
+      "phoneNumber": "1-700-700-061",
+	  "logoURL": "insert jpg file",
+	  "discountStartHour": "18:30"
     }
 
 	]

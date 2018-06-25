@@ -2,27 +2,28 @@ package com.example.foodemption;
 
 import android.Manifest;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,39 +31,138 @@ public class MainActivity extends AppCompatActivity {
     private static final int ACCESS_FINE_LOCATION_REQUEST_CODE = 11111;
     private FusedLocationProviderClient mFusedLocationClient;
     private Task<Location> location;
-    TextView tvLocation;
+    TextView tvLastUpdate;
     private ListView lvBusinesses;
-    private String LI;
-
-    //int gotLocation = 55;
-    //double lat = 0.0;
-    //private Location mLastLocation;
+    //private DistanceCalculator distanceCalculator;
+    private BusinessAdapter adapter;
+    private ArrayList<Business> businessesList;
+    private SimpleDateFormat lastUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tvLocation = findViewById(R.id.tvLocation);
+        tvLastUpdate = findViewById(R.id.tvLastUpdate);
         lvBusinesses = findViewById(R.id.lvBusinesses);
+        lvBusinesses.setVisibility(View.INVISIBLE);
+        businessesList = Business.getBusinessesFromFile("businessesHeb.json", this);
+        adapter = new BusinessAdapter(this, businessesList);
+        lvBusinesses.setAdapter(adapter);
+        lastUpdate = new SimpleDateFormat("E, d/M HH:mm");
+        //Algolia code
+        /*Client client = new Client("090J1XPRFE", "ccf46d6f9da2b10235034f9845bf015f");
+        Index index = client.getIndex("Businesses");
+        Query query = new Query("03-561-8111")
+                .setAttributesToRetrieve("phoneNumber")
+                .setHitsPerPage(50);
 
-        final Map<String, Business> businessesMap = Business.getBusinessesFromFile("businesses.json", this);
 
-        String[] listItems = new String[businessesMap.size()];
-        int i = 0;
+        index.searchAsync(query, new CompletionHandler() {
+            @Override
+            public void requestCompleted(JSONObject content, AlgoliaException error) {
+                // [...]
+                //String Businumber = content.optString("phoneNumber");
+                //Gson gson = new Gson();
+               // String queryBusiness = gson.fromJson(content.getString("hits"),Business.class);
 
-        for (Map.Entry<String, Business> entry : businessesMap.entrySet()) {
+                /*try {
+                    String businessName = content.getJSONObject("businesses").getString("name");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });*/
 
-                Business business = businessesMap.get(entry);
-                listItems[i] = business.getName();
-                i++;
 
+
+        /*try {
+            index.addObjectAsync(new JSONObject()
+                    .put("name", "לחמנינה")
+                    .put("ID", "11111114")
+                    .put("latitude", 32.071863)
+                    .put("longitude", 34.779550)
+                    .put("address", "מרמורק 4 תל אביב")
+                    .put("hours", "7:00-23:00")
+                    .put("phone number", "03-536-2124")
+                    .put("logo", "")
+                    .put("discount start hour", "20:00"), null);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }*/
+
+        /*
+        JSONObject settings = new JSONObject();
+        //.append("searchableAttributes", "name")
+        //        .append("searchableAttributes", "type");
+        index.setSettingsAsync(settings, null);
+
+        CompletionHandler completionHandler = new CompletionHandler() {
+            @Override
+            public void requestCompleted(JSONObject content, AlgoliaException error) {
+                // [...]
+            }
+        };
+// search by name
+        index.searchAsync(new Query("לחמים"), completionHandler);
+//
+
+*/
+
+        /*String[] listItems = new String[businessesList.size()];
+
+        for (int i = 0; i < businessesList.size(); i++) {
+            Business business = businessesList.get(i);
+            listItems[i] = business.getName();
         }
 
-
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems);
-
         lvBusinesses.setAdapter(adapter);
+*/
+        getLocation();
 
+                    /*@Override
+                    public void onComplete(@NonNull Task<Location> location) {
+
+                        if (location != null) {
+                            //tvLastUpdate.setText(String.valueOf(location.getLatitude()));
+                            tvLastUpdate.setText(String.valueOf(location.getResult().getLatitude()));
+
+                            // Logic to handle location object
+                            gotLocation = 100;
+
+                        }
+                        else {
+                            gotLocation = 99;
+                        }
+                        tvLastUpdate.setText(String.valueOf(gotLocation));
+                        tvLastUpdate.setText(String.valueOf(location.getResult().getLatitude()));
+                    }
+                    */
+        /*if (location != null) {
+            //userLocation = location.getResult().toString();
+            lat = location.getResult().getLatitude();
+            //tvLastUpdate.setText(userLocation);
+            gotLocation = 50;
+        }
+        else {
+            gotLocation = 49;
+        }
+        */
+
+
+        //tvLastUpdate.setText(Double.toString(lat));
+        //tvLastUpdate.setText(Integer.toString(gotLocation));
+        //tvLastUpdate.setText(String.valueOf(gotLocation));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showCurrentDateTime();
+        getLocation();
+    }
+
+        public void getLocation(){
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -77,61 +177,40 @@ public class MainActivity extends AppCompatActivity {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         location = mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>()
-                        //.addOnCompleteListener (this, new OnCompleteListener <Location>()
 
                 {
                     @Override
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            tvLocation.setText("Latitude: " + String.valueOf(location.getLatitude()) + "\n" +
-                                    "Longitude: " + String.valueOf(location.getLongitude()));
+                            //tvLocation.setText("Latitude: " + String.valueOf(location.getLatitude()) + "\n" +
+                            //        "Longitude: " + String.valueOf(location.getLongitude()));
+                            showCurrentDateTime();
+                            DistanceCalculator distanceCalculator = new DistanceCalculator(location, businessesList);
+                            distanceCalculator.calculateDistance();
+                            adapter.notifyDataSetChanged();
+                            lvBusinesses.setVisibility(View.VISIBLE);
+
+
 
                             // Logic to handle location object
                             //gotLocation = 100;
 
                         } else {
                             //gotLocation = 99;
-                            tvLocation.setText("Couldn't get location please restart the app");
+                            tvLastUpdate.setText("Couldn't get location please restart the app");
                         }
-                        //tvLocation.setText(String.valueOf(gotLocation));
-                        //tvLocation.setText(String.valueOf(location.getLatitude()));
+                        //tvLastUpdate.setText(String.valueOf(gotLocation));
+                        //tvLastUpdate.setText(String.valueOf(location.getLatitude()));
                     }
                 });
 
-                    /*@Override
-                    public void onComplete(@NonNull Task<Location> location) {
+    }
 
-                        if (location != null) {
-                            //tvLocation.setText(String.valueOf(location.getLatitude()));
-                            tvLocation.setText(String.valueOf(location.getResult().getLatitude()));
-
-                            // Logic to handle location object
-                            gotLocation = 100;
-
-                        }
-                        else {
-                            gotLocation = 99;
-                        }
-                        tvLocation.setText(String.valueOf(gotLocation));
-                        tvLocation.setText(String.valueOf(location.getResult().getLatitude()));
-                    }
-                    */
-        /*if (location != null) {
-            //userLocation = location.getResult().toString();
-            lat = location.getResult().getLatitude();
-            //tvLocation.setText(userLocation);
-            gotLocation = 50;
-        }
-        else {
-            gotLocation = 49;
-        }
-        */
-
-
-        //tvLocation.setText(Double.toString(lat));
-        //tvLocation.setText(Integer.toString(gotLocation));
-        //tvLocation.setText(String.valueOf(gotLocation));
+    public void showCurrentDateTime(){
+        Date currentTime = Calendar.getInstance().getTime();
+        String currentTimeFormat = lastUpdate.format(currentTime);
+        tvLastUpdate.setText("מעודכן ל: " + currentTimeFormat);
     }
 
 
@@ -139,9 +218,9 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         if (requestCode == ACCESS_FINE_LOCATION_REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Thank you! Permission granted", Toast.LENGTH_SHORT).show();
-            } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+            //if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            //    Toast.makeText(this, "Thank you! Permission granted", Toast.LENGTH_SHORT).show();
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
 
                 if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
                         Manifest.permission.ACCESS_FINE_LOCATION)) {

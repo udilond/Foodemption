@@ -1,0 +1,43 @@
+﻿{
+  "businesses": [
+    {
+      "name": "לחמים",
+      "ID": "11111111",
+      "type": "מאפיה",
+      "latitude": 32.069657,
+      "longitude": 34.784563,
+      "address": "החשמונאים 103",
+      "city": "תל אביב",
+      "hours": "7AM–8:30PM",
+      "phoneNumber": "03-561-8111",
+      "logoURL": "https://image.ibb.co/hMa9Ny/logo_Lehamim1.png",
+      "discountStartHour": "20:00"
+    },
+    {
+      "name": "זומר",
+      "ID": "11111112",
+      "type": "מאפיה",
+      "latitude": 32.079852,
+      "longitude": 34.773613,
+      "address": "פרישמן 39",
+      "city": "תל אביב",
+      "hours": "7AM–8:30PM",
+      "phoneNumber": "03-523-3396",
+      "logoURL": "https://image.ibb.co/ibGfCy/logo_Zomer1.png",
+      "discountStartHour": "19:00"
+    },
+    {
+      "name": "בוטיק סנטרל",
+      "ID": "11111113",
+      "type": "קונדיטוריה",
+      "latitude": 32.079356,
+      "longitude": 34.779773,
+      "address": "פרישמן 90",
+      "city": "תל אביב",
+      "hours": "7AM–8:00PM",
+      "phoneNumber": "1-700-700-061",
+      "logoURL": "https://image.ibb.co/eZThQJ/logo_Boutique_Central.png",
+      "discountStartHour": "18:30"
+    }
+  ]
+}
