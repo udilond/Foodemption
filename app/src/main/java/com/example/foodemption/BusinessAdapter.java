@@ -71,6 +71,7 @@ public class BusinessAdapter extends BaseAdapter{
         tvAddress.setText(business.getAddress() + "\n" + business.getCity());
         tvDiscountStartHour.setText("החל מ"+ "\n" +business.getDiscountStartHour());
         double d = business.getDistanceFromUserLocation()/1000.0;
+        //double d = 3.0;
         tvDistanceFromUser.setText(new DecimalFormat("#.#").format(d) + " ק\"מ");
         //new DecimalFormat("#.#").format(getDistanceFromUserLocation);
 

@@ -2,6 +2,9 @@ package com.example.foodemption;
 
 import android.content.Context;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +30,7 @@ public class Business {
     private String logoURL;
     private String discountStartHour;
     private Float distanceFromUserLocation;
+
     //private Float distanceFromUserLocationToPresent;
 
 
@@ -67,6 +71,7 @@ public class Business {
 
     }
 
+
     private static String loadJsonFromAsset(String fileName, Context context) {
         String jsonInfo;
 
@@ -84,6 +89,7 @@ public class Business {
 
         return jsonInfo;
     }
+
 
     public String getName() {
         return name;
@@ -138,7 +144,50 @@ public class Business {
         distanceFromUserLocation = distance;
     }
 
-    /*public void setDistanceFromUserLocationToPresent() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setHours(String hours) {
+        this.hours = hours;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setLogoURL(String logoURL) {
+        this.logoURL = logoURL;
+    }
+
+    public void setDiscountStartHour(String discountStartHour) {
+        this.discountStartHour = discountStartHour;
+    }
+/*public void setDistanceFromUserLocationToPresent() {
         distanceFromUserLocationToPresent = new DecimalFormat("#.#").format(distanceFromUserLocation);
 
     }
@@ -150,6 +199,8 @@ public class Business {
 
 
 }
+
+
 
 
     
