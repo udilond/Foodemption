@@ -131,10 +131,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onRestart() {
+        super.onRestart();
         showCurrentDateTime();
         getLocation();
+
     }
 
     public void getLocation() {
