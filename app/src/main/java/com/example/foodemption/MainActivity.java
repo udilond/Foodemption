@@ -192,38 +192,36 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if (requestCode == ACCESS_FINE_LOCATION_REQUEST_CODE) {
-            //if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            //    Toast.makeText(this, "Thank you! Permission granted", Toast.LENGTH_SHORT).show();
-            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+        boolean isAccessFineLocationRequestCode = requestCode == ACCESS_FINE_LOCATION_REQUEST_CODE;
+        boolean isPermissionDenied = grantResults[0] == PackageManager.PERMISSION_DENIED;
+        boolean shouldShowRequestPermissionRationale = ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
 
-                if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                    dialog.setMessage("This permission is important to offer relevant deals, please approve it")
-                            .setTitle("Important permission required!");
 
-                    dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+        if (isAccessFineLocationRequestCode && isPermissionDenied && shouldShowRequestPermissionRationale) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setMessage("This permission is important to offer relevant deals, please approve it")
+                    .setTitle("Important permission required!");
 
-                            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                    ACCESS_FINE_LOCATION_REQUEST_CODE);
-                        }
-                    });
+            dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-                    dialog.setNegativeButton("NO THANKS", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(MainActivity.this, "Cannot be done!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    dialog.show();
-                } else {
-                    Toast.makeText(this, "We will never show this to you again!", Toast.LENGTH_SHORT).show();
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            ACCESS_FINE_LOCATION_REQUEST_CODE);
                 }
-            }
+            });
+
+            dialog.setNegativeButton("NO THANKS", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(MainActivity.this, "Cannot be done!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            dialog.show();
+        } else {
+            Toast.makeText(this, "We will never show this to you again!", Toast.LENGTH_SHORT).show();
         }
     }
 
